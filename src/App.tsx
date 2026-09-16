@@ -111,7 +111,7 @@ const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 function getWhatsAppNumber() {
-  return (import.meta.env.VITE_WHATSAPP_NUMBER || "5527999999999").replace(/\D/g, "");
+  return (import.meta.env.VITE_WHATSAPP_NUMBER || "5527988721801").replace(/\D/g, "");
 }
 
 function isOpenNow(date = new Date()) {
