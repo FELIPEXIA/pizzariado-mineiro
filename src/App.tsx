@@ -1,14 +1,22 @@
 import { useMemo, useState } from "react";
 import {
+  AlertCircle,
+  ArrowLeft,
   ArrowRight,
+  Banknote,
+  Bike,
   Check,
   ChevronDown,
   Clock3,
+  CreditCard,
+  FileText,
   MapPin,
   Minus,
   Pizza,
   Plus,
+  QrCode,
   ShoppingBag,
+  Store,
   Trash2,
   X,
 } from "lucide-react";
@@ -24,11 +32,26 @@ type PizzaFlavor = {
   popular?: boolean;
 };
 
+type Beverage = {
+  id: string;
+  name: string;
+  volume: string;
+  price: number;
+  description: string;
+  tag?: string;
+  theme: {
+    emoji: string;
+    iconBg: string;
+    border: string;
+    badge: string;
+  };
+};
+
 type CartItem = {
   id: string;
-  flavor: PizzaFlavor;
-  size: Size;
-  crust: Crust;
+  name: string;
+  subtitle: string;
+  category: "pizza" | "bebida";
   quantity: number;
   unitPrice: number;
 };
@@ -107,6 +130,144 @@ const FLAVORS: PizzaFlavor[] = [
   },
 ];
 
+const BEVERAGES: Beverage[] = [
+  {
+    id: "coca-15",
+    name: "Coca-Cola Original",
+    volume: "1,5L",
+    price: 10.0,
+    description: "Sabor inconfundível e refrescante na medida certa para seu pedido.",
+    theme: {
+      emoji: "🥤",
+      iconBg: "bg-red-950/60 text-red-500",
+      border: "border-red-900/50",
+      badge: "border-red-900/60 bg-red-950/40 text-red-400",
+    },
+  },
+  {
+    id: "coca-20",
+    name: "Coca-Cola Original",
+    volume: "2L",
+    price: 12.0,
+    description: "O tamanho perfeito de 2 Litros para dividir com a família toda.",
+    tag: "Mais Pedida",
+    theme: {
+      emoji: "🥤",
+      iconBg: "bg-red-950/60 text-red-500",
+      border: "border-red-900/50",
+      badge: "border-red-900/60 bg-red-950/40 text-red-400",
+    },
+  },
+  {
+    id: "coca-zero-15",
+    name: "Coca-Cola Zero",
+    volume: "1,5L",
+    price: 10.0,
+    description: "Todo o sabor inconfundível de Coca-Cola sem adição de açúcares.",
+    tag: "Zero Açúcar",
+    theme: {
+      emoji: "🥤",
+      iconBg: "bg-zinc-800 text-zinc-300",
+      border: "border-zinc-700",
+      badge: "border-zinc-700 bg-zinc-800 text-zinc-300",
+    },
+  },
+  {
+    id: "coca-zero-20",
+    name: "Coca-Cola Zero",
+    volume: "2L",
+    price: 12.0,
+    description: "Garrafa de 2 litros do clássico sem açúcar, extremamente gelada.",
+    tag: "Zero Açúcar",
+    theme: {
+      emoji: "🥤",
+      iconBg: "bg-zinc-800 text-zinc-300",
+      border: "border-zinc-700",
+      badge: "border-zinc-700 bg-zinc-800 text-zinc-300",
+    },
+  },
+  {
+    id: "guarana-coroa-20",
+    name: "Guaraná Coroa",
+    volume: "2L",
+    price: 8.5,
+    description: "O autêntico guaraná capixaba, muito refrescante e favorito da casa.",
+    tag: "Destaque da Casa",
+    theme: {
+      emoji: "👑",
+      iconBg: "bg-emerald-950/60 text-emerald-400",
+      border: "border-emerald-800/60",
+      badge: "border-emerald-700/60 bg-emerald-950/50 text-emerald-300",
+    },
+  },
+  {
+    id: "coroa-laranja-20",
+    name: "Coroa Laranja",
+    volume: "2L",
+    price: 8.0,
+    description: "Refrigerante Coroa sabor laranja, bem gelado e cítrico.",
+    theme: {
+      emoji: "🍊",
+      iconBg: "bg-orange-950/60 text-orange-400",
+      border: "border-orange-800/60",
+      badge: "border-orange-800/60 bg-orange-950/40 text-orange-400",
+    },
+  },
+  {
+    id: "coroa-uva-20",
+    name: "Coroa Uva",
+    volume: "2L",
+    price: 8.0,
+    description: "Sabor doce e marcante de uva que harmoniza muito bem com pizza.",
+    theme: {
+      emoji: "🍇",
+      iconBg: "bg-purple-950/60 text-purple-400",
+      border: "border-purple-800/60",
+      badge: "border-purple-800/60 bg-purple-950/40 text-purple-400",
+    },
+  },
+  {
+    id: "coroa-limao-20",
+    name: "Coroa Limão",
+    volume: "2L",
+    price: 8.0,
+    description: "Refrescância pura do limão para acompanhar e quebrar o paladar.",
+    theme: {
+      emoji: "🍋",
+      iconBg: "bg-lime-950/60 text-lime-400",
+      border: "border-lime-800/60",
+      badge: "border-lime-800/60 bg-lime-950/40 text-lime-400",
+    },
+  },
+  {
+    id: "coroa-tangerina-20",
+    name: "Coroa Tangerina",
+    volume: "2L",
+    price: 8.0,
+    description: "O sabor cítrico e frutado especial de tangerina que todo mundo ama.",
+    theme: {
+      emoji: "🍊",
+      iconBg: "bg-amber-950/60 text-amber-400",
+      border: "border-amber-800/60",
+      badge: "border-amber-800/60 bg-amber-950/40 text-amber-400",
+    },
+  },
+  {
+    id: "coroa-cola-20",
+    name: "Coroa Cola",
+    volume: "2L",
+    price: 7.5,
+    description: "Sabor cola refrescante com o melhor preço para sua refeição.",
+    tag: "Super Preço",
+    theme: {
+      emoji: "🥤",
+      iconBg: "bg-rose-950/60 text-rose-400",
+      border: "border-rose-800/60",
+      badge: "border-rose-800/60 bg-rose-950/40 text-rose-400",
+    },
+  },
+];
+
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
@@ -131,10 +292,23 @@ function App() {
   const [selectedCrust, setSelectedCrust] = useState<Crust>("Tradicional");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [cartStep, setCartStep] = useState<1 | 2>(1);
   const [category, setCategory] = useState<"Todas" | "Salgadas" | "Doces">("Todas");
   const [customerName, setCustomerName] = useState("");
   const [deliveryType, setDeliveryType] = useState<"Retirada" | "Entrega">("Retirada");
-  const [address, setAddress] = useState("");
+  const [street, setStreet] = useState("");
+  const [number, setNumber] = useState("");
+  const [neighborhood, setNeighborhood] = useState("");
+  const [complement, setComplement] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"pix" | "cartao" | "dinheiro">("pix");
+  const [changeFor, setChangeFor] = useState("");
+  const [orderNotes, setOrderNotes] = useState("");
+  const [formErrors, setFormErrors] = useState<{
+    name?: string;
+    street?: string;
+    number?: string;
+    neighborhood?: string;
+  }>({});
 
   const open = isOpenNow();
 
@@ -160,7 +334,7 @@ function App() {
 
     const crustExtra = CRUSTS.find((item) => item.label === selectedCrust)?.extra ?? 0;
     const unitPrice = selectedFlavor.prices[selectedSize] + crustExtra;
-    const itemId = `${selectedFlavor.id}-${selectedSize}-${selectedCrust}`;
+    const itemId = `pizza-${selectedFlavor.id}-${selectedSize}-${selectedCrust}`;
 
     setCart((current) => {
       const existing = current.find((item) => item.id === itemId);
@@ -173,9 +347,9 @@ function App() {
         ...current,
         {
           id: itemId,
-          flavor: selectedFlavor,
-          size: selectedSize,
-          crust: selectedCrust,
+          name: selectedFlavor.name,
+          subtitle: `Tamanho ${selectedSize} · Borda ${selectedCrust}`,
+          category: "pizza",
           quantity: 1,
           unitPrice,
         },
@@ -183,6 +357,34 @@ function App() {
     });
 
     setSelectedFlavor(null);
+    setCartStep(1);
+    setCartOpen(true);
+  }
+
+  function addBeverageToCart(beverage: Beverage) {
+    const itemId = `bev-${beverage.id}`;
+
+    setCart((current) => {
+      const existing = current.find((item) => item.id === itemId);
+      if (existing) {
+        return current.map((item) =>
+          item.id === itemId ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [
+        ...current,
+        {
+          id: itemId,
+          name: beverage.name,
+          subtitle: `Garrafa ${beverage.volume}`,
+          category: "bebida",
+          quantity: 1,
+          unitPrice: beverage.price,
+        },
+      ];
+    });
+
+    setCartStep(1);
     setCartOpen(true);
   }
 
@@ -198,41 +400,84 @@ function App() {
     );
   }
 
+  function handleAdvanceToStep2() {
+    if (!cart.length) return;
+    setCartStep(2);
+  }
+
   function checkoutWhatsApp() {
     if (!cart.length) return;
 
+    const errors: {
+      name?: string;
+      street?: string;
+      number?: string;
+      neighborhood?: string;
+    } = {};
+
     if (!customerName.trim()) {
-      alert("Informe seu nome antes de finalizar o pedido.");
+      errors.name = "Informe seu nome";
+    }
+
+    if (deliveryType === "Entrega") {
+      if (!street.trim()) {
+        errors.street = "Informe a rua / avenida";
+      }
+      if (!number.trim()) {
+        errors.number = "Informe o número";
+      }
+      if (!neighborhood.trim()) {
+        errors.neighborhood = "Informe o bairro";
+      }
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
       return;
     }
 
-    if (deliveryType === "Entrega" && !address.trim()) {
-      alert("Informe o endereço para entrega.");
-      return;
-    }
+    setFormErrors({});
+
+    const paymentLabel = {
+      pix: "⚡ PIX",
+      cartao: "💳 Cartão (levar maquininha)",
+      dinheiro: changeFor.trim()
+        ? `💵 Dinheiro (troco para ${changeFor.trim()})`
+        : "💵 Dinheiro (sem troco)",
+    }[paymentMethod];
 
     const lines = cart.map(
       (item) =>
-        `${item.quantity}x ${item.flavor.name} — ${item.size} — Borda: ${item.crust} — ${formatBRL(
+        `• ${item.quantity}x ${item.name} (${item.subtitle}) — ${formatBRL(
           item.unitPrice * item.quantity
         )}`
     );
 
+    const formattedAddress = [
+      `${street.trim()}, nº ${number.trim()}`,
+      `Bairro: ${neighborhood.trim()}`,
+      complement.trim() ? `Ref: ${complement.trim()}` : "",
+    ]
+      .filter(Boolean)
+      .join(" — ");
+
     const message = [
       "🍕 *NOVO PEDIDO — PIZZARIA DO MINEIRO*",
       "",
-      `👤 Cliente: ${customerName.trim()}`,
-      `📦 Modalidade: ${deliveryType}`,
-      ...(deliveryType === "Entrega" ? [`📍 Endereço: ${address.trim()}`] : []),
+      `👤 *Cliente:* ${customerName.trim()}`,
+      `📦 *Modalidade:* ${deliveryType === "Entrega" ? "🛵 Entrega a domicílio" : "🏬 Retirada no balcão"}`,
+      ...(deliveryType === "Entrega" ? [`📍 *Endereço:* ${formattedAddress}`] : []),
+      `💳 *Forma de pagamento:* ${paymentLabel}`,
+      ...(orderNotes.trim() ? [`📝 *Observações:* ${orderNotes.trim()}`] : []),
       "",
-      "*Itens:*",
+      "*Itens do Pedido:*",
       ...lines,
       "",
       `💰 Subtotal: ${formatBRL(subtotal)}`,
-      ...(deliveryFee ? [`🛵 Taxa de entrega: ${formatBRL(deliveryFee)}`] : []),
-      `💳 *Total: ${formatBRL(total)}*`,
+      `🛵 Taxa de entrega: ${deliveryFee > 0 ? formatBRL(deliveryFee) : "Grátis (Retirada)"}`,
+      `🔥 *TOTAL A PAGAR: ${formatBRL(total)}*`,
       "",
-      "Pode confirmar o pedido e o prazo, por favor? 🍕",
+      "Por favor, confirme se recebeu o pedido e qual a previsão de tempo! 🍕",
     ].join("\n");
 
     const url = `https://wa.me/${getWhatsAppNumber()}?text=${encodeURIComponent(message)}`;
@@ -254,7 +499,10 @@ function App() {
           </a>
 
           <button
-            onClick={() => setCartOpen(true)}
+            onClick={() => {
+              setCartStep(1);
+              setCartOpen(true);
+            }}
             className="relative flex items-center gap-2 rounded-full border border-zinc-700 bg-zinc-900 px-4 py-2 text-sm font-bold transition hover:border-red-500 hover:bg-zinc-800"
           >
             <ShoppingBag size={18} />
@@ -286,12 +534,20 @@ function App() {
                   Escolha sua pizza, personalize o tamanho e a borda e mande o pedido direto
                   para nosso WhatsApp.
                 </p>
-                <a
-                  href="#cardapio"
-                  className="mt-6 inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-red-800 transition hover:bg-red-50"
-                >
-                  Ver cardápio <ArrowRight size={17} />
-                </a>
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <a
+                    href="#cardapio"
+                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-red-800 transition hover:bg-red-50"
+                  >
+                    Ver pizzas <ArrowRight size={17} />
+                  </a>
+                  <a
+                    href="#bebidas"
+                    className="inline-flex items-center gap-2 rounded-xl border border-red-800/80 bg-red-950/60 px-5 py-3 text-sm font-black text-white transition hover:bg-red-900/60"
+                  >
+                    Ver bebidas 🥤
+                  </a>
+                </div>
               </div>
             </div>
 
@@ -335,7 +591,7 @@ function App() {
           </div>
         </section>
 
-        <section id="cardapio" className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
+        <section id="cardapio" className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
           <div className="flex flex-col gap-5 border-b border-zinc-800 pb-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-xs font-black uppercase tracking-[0.2em] text-red-500">Nosso cardápio</p>
@@ -343,7 +599,7 @@ function App() {
               <p className="mt-2 text-sm text-zinc-500">Escolha seu sabor e personalize do seu jeito.</p>
             </div>
 
-            <div className="flex w-full rounded-xl border border-zinc-800 bg-zinc-900 p-1 sm:w-auto">
+            <div className="flex w-full flex-wrap gap-1.5 rounded-xl border border-zinc-800 bg-zinc-900 p-1 sm:w-auto">
               {(["Todas", "Salgadas", "Doces"] as const).map((item) => (
                 <button
                   key={item}
@@ -355,6 +611,12 @@ function App() {
                   {item}
                 </button>
               ))}
+              <a
+                href="#bebidas"
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-bold text-amber-400 transition hover:bg-zinc-800 sm:flex-none"
+              >
+                <span>🥤</span> Bebidas
+              </a>
             </div>
           </div>
 
@@ -393,6 +655,112 @@ function App() {
                 </div>
               </article>
             ))}
+          </div>
+        </section>
+
+        {/* SEÇÃO DE BEBIDAS */}
+        <section id="bebidas" className="mx-auto max-w-6xl border-t border-zinc-800/80 px-4 pb-24 pt-16 sm:px-6">
+          <div className="flex flex-col gap-4 border-b border-zinc-800 pb-6 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-xs font-black uppercase tracking-wider text-amber-400">
+                <span>🥤</span> Bebidas Geladas
+              </div>
+              <h2 className="mt-2 text-3xl font-black tracking-tight">Refrigerantes & Bebidas</h2>
+              <p className="mt-1 text-sm text-zinc-400">
+                O acompanhamento gelado perfeito para saborear com sua pizza quentinha.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 text-xs font-bold text-zinc-400">
+              <span className="h-2 w-2 rounded-full bg-green-500" /> 10 opções geladas prontas para entrega
+            </div>
+          </div>
+
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {BEVERAGES.map((beverage) => {
+              const inCart = cart.find((item) => item.id === `bev-${beverage.id}`);
+              const quantityInCart = inCart?.quantity ?? 0;
+
+              return (
+                <article
+                  key={beverage.id}
+                  className={`group relative flex flex-col justify-between rounded-2xl border bg-zinc-900/70 p-4.5 transition hover:-translate-y-0.5 hover:bg-zinc-900 ${
+                    quantityInCart > 0
+                      ? "border-green-800/80 bg-green-950/15 shadow-lg shadow-green-950/20"
+                      : "border-zinc-800 hover:border-zinc-700"
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-start justify-between gap-2">
+                      <div
+                        className={`grid h-12 w-12 place-items-center rounded-xl border ${beverage.theme.iconBg} ${beverage.theme.border}`}
+                      >
+                        <span className="text-2xl leading-none">{beverage.theme.emoji}</span>
+                      </div>
+                      <div className="flex flex-col items-end gap-1">
+                        <span className="rounded-full border border-zinc-800 bg-zinc-950 px-2 py-0.5 text-[11px] font-black text-zinc-300">
+                          {beverage.volume}
+                        </span>
+                        {beverage.tag && (
+                          <span
+                            className={`rounded-full border px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${beverage.theme.badge}`}
+                          >
+                            {beverage.tag}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <h3 className="mt-3.5 text-base font-black text-white">{beverage.name}</h3>
+                    <p className="mt-1 text-xs leading-relaxed text-zinc-400 min-h-10">
+                      {beverage.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-between border-t border-zinc-800/80 pt-3.5">
+                    <div>
+                      <span className="block text-[10px] font-bold uppercase tracking-wider text-zinc-500">
+                        Preço
+                      </span>
+                      <strong className="text-lg font-black text-white">
+                        {formatBRL(beverage.price)}
+                      </strong>
+                    </div>
+
+                    {quantityInCart > 0 ? (
+                      <div className="flex items-center gap-1.5 rounded-xl border border-zinc-700 bg-zinc-950 p-1">
+                        <button
+                          onClick={() => updateQuantity(`bev-${beverage.id}`, -1)}
+                          className="grid h-7 w-7 place-items-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+                          aria-label={`Diminuir ${beverage.name}`}
+                          title="Diminuir"
+                        >
+                          <Minus size={13} />
+                        </button>
+                        <span className="w-5 text-center text-xs font-black text-green-400">
+                          {quantityInCart}
+                        </span>
+                        <button
+                          onClick={() => updateQuantity(`bev-${beverage.id}`, 1)}
+                          className="grid h-7 w-7 place-items-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+                          aria-label={`Aumentar ${beverage.name}`}
+                          title="Aumentar"
+                        >
+                          <Plus size={13} />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => addBeverageToCart(beverage)}
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-black text-zinc-950 shadow-sm transition hover:bg-red-500 hover:text-white active:scale-95"
+                      >
+                        <Plus size={14} strokeWidth={3} />
+                        Adicionar
+                      </button>
+                    )}
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
       </main>
@@ -496,157 +864,539 @@ function App() {
       {cartOpen && (
         <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm">
           <div className="ml-auto flex h-full w-full max-w-xl flex-col border-l border-zinc-800 bg-zinc-950 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-800 px-5 py-4">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-red-500">Seu pedido</p>
-                <h2 className="text-xl font-black">Resumo do carrinho</h2>
-              </div>
-              <button
-                onClick={() => setCartOpen(false)}
-                className="rounded-full bg-zinc-900 p-2 text-zinc-400 hover:text-white"
-                aria-label="Fechar carrinho"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-5">
-              {cart.length === 0 ? (
-                <div className="grid min-h-[50vh] place-items-center text-center">
-                  <div>
-                    <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-red-950 text-red-500">
-                      <ShoppingBag size={28} />
-                    </div>
-                    <h3 className="mt-4 text-lg font-black">Seu pedido está vazio</h3>
-                    <p className="mt-1 text-sm text-zinc-500">Escolha uma pizza no cardápio para começar.</p>
+            {/* Cabeçalho do Drawer */}
+            <div className="border-b border-zinc-800 bg-zinc-950 px-5 py-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  {cartStep === 2 && cart.length > 0 && (
                     <button
-                      onClick={() => setCartOpen(false)}
-                      className="mt-5 rounded-xl bg-red-600 px-5 py-3 text-sm font-black"
+                      onClick={() => setCartStep(1)}
+                      className="grid h-9 w-9 place-items-center rounded-full bg-zinc-900 text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+                      aria-label="Voltar para os itens"
+                      title="Voltar para os itens"
                     >
-                      Ver cardápio
+                      <ArrowLeft size={18} />
                     </button>
+                  )}
+                  <div>
+                    <p className="text-[11px] font-black uppercase tracking-wider text-red-500">
+                      {cart.length === 0
+                        ? "Seu pedido"
+                        : cartStep === 1
+                        ? "Etapa 1 de 2 • Itens do Pedido"
+                        : "Etapa 2 de 2 • Entrega e Pagamento"}
+                    </p>
+                    <h2 className="text-lg font-black sm:text-xl">
+                      {cart.length === 0
+                        ? "Carrinho vazio"
+                        : cartStep === 1
+                        ? "Revise seu pedido"
+                        : "Identificação e entrega"}
+                    </h2>
                   </div>
                 </div>
-              ) : (
-                <>
+
+                <button
+                  onClick={() => setCartOpen(false)}
+                  className="grid h-9 w-9 place-items-center rounded-full bg-zinc-900 text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
+                  aria-label="Fechar carrinho"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Barra de Progresso Visual */}
+              {cart.length > 0 && (
+                <div className="mt-3.5 flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setCartStep(1)}
+                    className="group flex flex-1 items-center gap-2 text-left"
+                    title="Etapa 1: Itens"
+                  >
+                    <div
+                      className={`h-1.5 flex-1 rounded-full transition-all ${
+                        cartStep === 1 ? "bg-red-500" : "bg-green-500"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAdvanceToStep2}
+                    className="group flex flex-1 items-center gap-2 text-left"
+                    title="Etapa 2: Entrega e Pagamento"
+                  >
+                    <div
+                      className={`h-1.5 flex-1 rounded-full transition-all ${
+                        cartStep === 2 ? "bg-red-500" : "bg-zinc-800"
+                      }`}
+                    />
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Conteúdo Dinâmico por Etapa */}
+            {cart.length === 0 ? (
+              <div className="flex flex-1 items-center justify-center p-5 text-center">
+                <div>
+                  <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-red-950 text-red-500">
+                    <ShoppingBag size={28} />
+                  </div>
+                  <h3 className="mt-4 text-lg font-black">Seu pedido está vazio</h3>
+                  <p className="mt-1 text-sm text-zinc-500">Escolha uma pizza no cardápio para começar.</p>
+                  <button
+                    onClick={() => setCartOpen(false)}
+                    className="mt-5 rounded-xl bg-red-600 px-5 py-3 text-sm font-black text-white transition hover:bg-red-500"
+                  >
+                    Ver cardápio
+                  </button>
+                </div>
+              </div>
+            ) : cartStep === 1 ? (
+              /* ETAPA 1: REVISÃO DOS ITENS */
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-5 space-y-4">
+                  <div className="flex items-center justify-between text-xs text-zinc-400">
+                    <span>
+                      {totalItems} {totalItems === 1 ? "item adicionado" : "itens adicionados"}
+                    </span>
+                    <button
+                      onClick={() => setCart([])}
+                      className="text-[11px] text-zinc-500 transition hover:text-red-400"
+                    >
+                      Esvaziar carrinho
+                    </button>
+                  </div>
+
                   <div className="space-y-3">
                     {cart.map((item) => (
-                      <div key={item.id} className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4">
+                      <div
+                        key={item.id}
+                        className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 transition"
+                      >
                         <div className="flex items-start justify-between gap-3">
                           <div>
-                            <h3 className="font-black">{item.flavor.name}</h3>
-                            <p className="mt-1 text-xs text-zinc-500">
-                              {item.size} · Borda {item.crust}
+                            <div className="flex items-center gap-2">
+                              <span
+                                className={`rounded-md px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+                                  item.category === "bebida"
+                                    ? "border border-amber-500/30 bg-amber-500/10 text-amber-400"
+                                    : "border border-red-500/30 bg-red-500/10 text-red-400"
+                                }`}
+                              >
+                                {item.category === "bebida" ? "Bebida" : "Pizza"}
+                              </span>
+                              <h3 className="text-base font-black text-white">{item.name}</h3>
+                            </div>
+                            <p className="mt-1 text-xs text-zinc-400">
+                              {item.subtitle}
                             </p>
                           </div>
                           <button
                             onClick={() => updateQuantity(item.id, -item.quantity)}
-                            className="text-zinc-600 transition hover:text-red-500"
-                            aria-label={`Remover ${item.flavor.name}`}
+                            className="rounded-lg p-1.5 text-zinc-500 transition hover:bg-red-950/40 hover:text-red-400"
+                            aria-label={`Remover ${item.name}`}
+                            title="Remover item"
                           >
-                            <Trash2 size={17} />
+                            <Trash2 size={16} />
                           </button>
                         </div>
 
                         <div className="mt-4 flex items-center justify-between">
-                          <div className="flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-950 p-1">
+                          <div className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-950 p-1">
                             <button
                               onClick={() => updateQuantity(item.id, -1)}
-                              className="grid h-7 w-7 place-items-center rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                              className="grid h-7 w-7 place-items-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
                               aria-label="Diminuir quantidade"
                             >
-                              <Minus size={14} />
+                              <Minus size={13} />
                             </button>
                             <span className="w-6 text-center text-sm font-black">{item.quantity}</span>
                             <button
                               onClick={() => updateQuantity(item.id, 1)}
-                              className="grid h-7 w-7 place-items-center rounded-md text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                              className="grid h-7 w-7 place-items-center rounded-lg text-zinc-400 transition hover:bg-zinc-800 hover:text-white"
                               aria-label="Aumentar quantidade"
                             >
-                              <Plus size={14} />
+                              <Plus size={13} />
                             </button>
                           </div>
-                          <strong>{formatBRL(item.unitPrice * item.quantity)}</strong>
+                          <div className="text-right">
+                            <span className="block text-xs text-zinc-500">Subtotal</span>
+                            <strong className="text-base text-zinc-100">
+                              {formatBRL(item.unitPrice * item.quantity)}
+                            </strong>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="mt-7 border-t border-zinc-800 pt-6">
-                    <h3 className="mb-3 font-black">Dados para finalizar</h3>
-
-                    <label className="block">
-                      <span className="mb-1.5 block text-xs font-bold text-zinc-500">Seu nome</span>
-                      <input
-                        value={customerName}
-                        onChange={(event) => setCustomerName(event.target.value)}
-                        placeholder="Como podemos te chamar?"
-                        className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm outline-none transition placeholder:text-zinc-600 focus:border-red-500"
+                  {/* Observações da cozinha */}
+                  <div className="pt-2">
+                    <label className="block rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4">
+                      <div className="mb-2 flex items-center gap-2 text-xs font-bold text-zinc-300">
+                        <FileText size={14} className="text-red-400" />
+                        Observações para a cozinha (opcional)
+                      </div>
+                      <textarea
+                        value={orderNotes}
+                        onChange={(e) => setOrderNotes(e.target.value)}
+                        placeholder="Ex: Tirar cebola, massa bem crocante, sachês de maionese..."
+                        rows={2}
+                        className="w-full resize-none rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-200 placeholder:text-zinc-600 outline-none transition focus:border-red-500"
                       />
                     </label>
-
-                    <div className="mt-4">
-                      <span className="mb-1.5 block text-xs font-bold text-zinc-500">Recebimento</span>
-                      <div className="grid grid-cols-2 gap-2">
-                        {(["Retirada", "Entrega"] as const).map((type) => (
-                          <button
-                            key={type}
-                            onClick={() => setDeliveryType(type)}
-                            className={`rounded-xl border px-4 py-3 text-sm font-bold ${
-                              deliveryType === type
-                                ? "border-red-500 bg-red-950/40 text-white"
-                                : "border-zinc-800 bg-zinc-900 text-zinc-400"
-                            }`}
-                          >
-                            {type}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {deliveryType === "Entrega" && (
-                      <label className="mt-4 block">
-                        <span className="mb-1.5 block text-xs font-bold text-zinc-500">Endereço de entrega</span>
-                        <input
-                          value={address}
-                          onChange={(event) => setAddress(event.target.value)}
-                          placeholder="Rua, número, bairro e referência"
-                          className="w-full rounded-xl border border-zinc-800 bg-zinc-900 px-4 py-3 text-sm outline-none transition placeholder:text-zinc-600 focus:border-red-500"
-                        />
-                      </label>
-                    )}
-
-                    <div className="mt-6 space-y-2 rounded-2xl bg-zinc-900 p-4 text-sm">
-                      <div className="flex justify-between text-zinc-400">
-                        <span>Subtotal</span>
-                        <span>{formatBRL(subtotal)}</span>
-                      </div>
-                      {deliveryFee > 0 && (
-                        <div className="flex justify-between text-zinc-400">
-                          <span>Taxa de entrega</span>
-                          <span>{formatBRL(deliveryFee)}</span>
-                        </div>
-                      )}
-                      <div className="mt-3 flex justify-between border-t border-zinc-800 pt-3">
-                        <span className="font-bold">Total</span>
-                        <span className="text-xl font-black">{formatBRL(total)}</span>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={checkoutWhatsApp}
-                      className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 px-5 py-3.5 font-black text-white transition hover:bg-green-500"
-                    >
-                      Finalizar pelo WhatsApp <ArrowRight size={18} />
-                    </button>
-
-                    <p className="mt-3 text-center text-[11px] leading-4 text-zinc-600">
-                      Ao clicar, seu pedido será aberto em uma conversa do WhatsApp com todos os itens e valores.
-                    </p>
                   </div>
-                </>
-              )}
-            </div>
+                </div>
+
+                {/* Rodapé Fixo Passo 1 */}
+                <div className="border-t border-zinc-800 bg-zinc-950/95 p-5 backdrop-blur">
+                  <div className="mb-3.5 flex items-center justify-between">
+                    <div>
+                      <span className="text-xs font-medium text-zinc-400">Subtotal dos itens</span>
+                      <p className="text-2xl font-black text-white">{formatBRL(subtotal)}</p>
+                    </div>
+                    <span className="rounded-full border border-zinc-800 bg-zinc-900 px-3 py-1 text-[11px] text-zinc-400">
+                      Entrega no próximo passo
+                    </span>
+                  </div>
+
+                  <button
+                    onClick={handleAdvanceToStep2}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-sm font-black text-white shadow-lg shadow-red-950/50 transition hover:bg-red-500 active:scale-[0.99]"
+                  >
+                    Continuar para entrega <ArrowRight size={17} />
+                  </button>
+
+                  <button
+                    onClick={() => setCartOpen(false)}
+                    className="mt-2.5 w-full py-1 text-center text-xs font-bold text-zinc-400 transition hover:text-zinc-200"
+                  >
+                    + Escolher mais itens no cardápio
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* ETAPA 2: IDENTIFICAÇÃO, ENTREGA E PAGAMENTO */
+              <div className="flex flex-1 flex-col overflow-hidden">
+                <div className="flex-1 overflow-y-auto p-5 space-y-5">
+                  {/* Seção 1: Identificação */}
+                  <div>
+                    <label className="block">
+                      <div className="mb-1.5 flex items-center justify-between">
+                        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
+                          Seu nome <span className="text-red-500">*</span>
+                        </span>
+                        {formErrors.name && (
+                          <span className="flex items-center gap-1 text-xs font-semibold text-red-400">
+                            <AlertCircle size={12} /> {formErrors.name}
+                          </span>
+                        )}
+                      </div>
+                      <input
+                        value={customerName}
+                        onChange={(e) => {
+                          setCustomerName(e.target.value);
+                          if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: undefined }));
+                        }}
+                        placeholder="Como podemos te chamar?"
+                        className={`w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
+                          formErrors.name
+                            ? "border-red-500 focus:ring-1 focus:ring-red-500"
+                            : "border-zinc-800 focus:border-red-500"
+                        }`}
+                      />
+                    </label>
+                  </div>
+
+                  {/* Seção 2: Modalidade de Recebimento */}
+                  <div>
+                    <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">
+                      Como deseja receber?
+                    </span>
+                    <div className="grid grid-cols-2 gap-2.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setDeliveryType("Retirada");
+                          setFormErrors((prev) => ({
+                            ...prev,
+                            street: undefined,
+                            number: undefined,
+                            neighborhood: undefined,
+                          }));
+                        }}
+                        className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition ${
+                          deliveryType === "Retirada"
+                            ? "border-red-500 bg-red-950/30 text-white shadow-sm shadow-red-950/30"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Store
+                            size={18}
+                            className={deliveryType === "Retirada" ? "text-red-400" : "text-zinc-500"}
+                          />
+                          <span className="text-sm font-bold">Retirada</span>
+                        </div>
+                        <p className="mt-1 text-[11px] text-zinc-400">Balcão da pizzaria (Grátis)</p>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setDeliveryType("Entrega")}
+                        className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition ${
+                          deliveryType === "Entrega"
+                            ? "border-red-500 bg-red-950/30 text-white shadow-sm shadow-red-950/30"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2">
+                          <Bike
+                            size={18}
+                            className={deliveryType === "Entrega" ? "text-red-400" : "text-zinc-500"}
+                          />
+                          <span className="text-sm font-bold">Entrega</span>
+                        </div>
+                        <p className="mt-1 text-[11px] text-zinc-400">Receba em casa (+R$ 5,00)</p>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Seção 3: Endereço de Entrega Estruturado */}
+                  {deliveryType === "Entrega" && (
+                    <div className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4 space-y-3.5">
+                      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2.5">
+                        <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-zinc-300">
+                          <MapPin size={14} className="text-red-500" /> Endereço de entrega{" "}
+                          <span className="text-red-500">*</span>
+                        </span>
+                        <span className="text-[11px] font-medium text-zinc-500">Dados da entrega</span>
+                      </div>
+
+                      {/* Linha 1: Rua / Avenida (flexível) e Número (fixo) */}
+                      <div className="grid grid-cols-[1fr_105px] gap-2.5">
+                        <div className="min-w-0">
+                          <label className="mb-1 block text-xs font-bold text-zinc-400">
+                            Rua / Avenida <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            value={street}
+                            onChange={(e) => {
+                              setStreet(e.target.value);
+                              if (formErrors.street)
+                                setFormErrors((prev) => ({ ...prev, street: undefined }));
+                            }}
+                            placeholder="Ex: Rua Almir Cruz"
+                            className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
+                              formErrors.street
+                                ? "border-red-500 focus:ring-1 focus:ring-red-500"
+                                : "border-zinc-800 focus:border-red-500"
+                            }`}
+                          />
+                          {formErrors.street && (
+                            <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-red-400">
+                              <AlertCircle size={11} /> {formErrors.street}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="min-w-0">
+                          <label className="mb-1 block text-xs font-bold text-zinc-400">
+                            Número <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            value={number}
+                            onChange={(e) => {
+                              setNumber(e.target.value);
+                              if (formErrors.number)
+                                setFormErrors((prev) => ({ ...prev, number: undefined }));
+                            }}
+                            placeholder="Ex: 150"
+                            className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
+                              formErrors.number
+                                ? "border-red-500 focus:ring-1 focus:ring-red-500"
+                                : "border-zinc-800 focus:border-red-500"
+                            }`}
+                          />
+                          {formErrors.number && (
+                            <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-red-400">
+                              <AlertCircle size={11} /> {formErrors.number}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Linha 2: Bairro */}
+                      <div>
+                        <label className="mb-1 block text-xs font-bold text-zinc-400">
+                          Bairro <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          value={neighborhood}
+                          onChange={(e) => {
+                            setNeighborhood(e.target.value);
+                            if (formErrors.neighborhood)
+                              setFormErrors((prev) => ({ ...prev, neighborhood: undefined }));
+                          }}
+                          placeholder="Ex: Nova Valverde"
+                          className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
+                            formErrors.neighborhood
+                              ? "border-red-500 focus:ring-1 focus:ring-red-500"
+                              : "border-zinc-800 focus:border-red-500"
+                          }`}
+                        />
+                        {formErrors.neighborhood && (
+                          <span className="mt-1 flex items-center gap-1 text-[11px] font-semibold text-red-400">
+                            <AlertCircle size={11} /> {formErrors.neighborhood}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Linha 3: Complemento / Referência */}
+                      <div>
+                        <div className="mb-1 flex items-center justify-between">
+                          <label className="text-xs font-bold text-zinc-400">
+                            Complemento / Referência
+                          </label>
+                          <span className="text-[10px] text-zinc-500">Opcional</span>
+                        </div>
+                        <input
+                          value={complement}
+                          onChange={(e) => setComplement(e.target.value)}
+                          placeholder="Ex: Apto 302, Bloco B, ao lado do mercado..."
+                          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-red-500"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Seção 4: Forma de Pagamento */}
+                  <div>
+                    <span className="mb-2 block text-xs font-bold uppercase tracking-wider text-zinc-400">
+                      Forma de pagamento
+                    </span>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("pix")}
+                        className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
+                          paymentMethod === "pix"
+                            ? "border-green-500/80 bg-green-950/20 text-white"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        <QrCode
+                          size={20}
+                          className={paymentMethod === "pix" ? "text-green-400" : "text-zinc-500"}
+                        />
+                        <span className="mt-1 text-xs font-bold">PIX</span>
+                        <span className="text-[10px] text-zinc-500">Mais rápido</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("cartao")}
+                        className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
+                          paymentMethod === "cartao"
+                            ? "border-red-500/80 bg-red-950/20 text-white"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        <CreditCard
+                          size={20}
+                          className={paymentMethod === "cartao" ? "text-red-400" : "text-zinc-500"}
+                        />
+                        <span className="mt-1 text-xs font-bold">Cartão</span>
+                        <span className="text-[10px] text-zinc-500">Maquininha</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod("dinheiro")}
+                        className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
+                          paymentMethod === "dinheiro"
+                            ? "border-yellow-500/80 bg-yellow-950/20 text-white"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                        }`}
+                      >
+                        <Banknote
+                          size={20}
+                          className={paymentMethod === "dinheiro" ? "text-yellow-400" : "text-zinc-500"}
+                        />
+                        <span className="mt-1 text-xs font-bold">Dinheiro</span>
+                        <span className="text-[10px] text-zinc-500">Em espécie</span>
+                      </button>
+                    </div>
+
+                    {/* Campo de troco quando selecionado Dinheiro */}
+                    {paymentMethod === "dinheiro" && (
+                      <div className="mt-3 rounded-xl border border-zinc-800 bg-zinc-900/70 p-3">
+                        <label className="block">
+                          <span className="mb-1 block text-xs font-bold text-zinc-400">
+                            Precisa de troco para quanto? (Opcional)
+                          </span>
+                          <input
+                            value={changeFor}
+                            onChange={(e) => setChangeFor(e.target.value)}
+                            placeholder="Ex: Troco para R$ 50 ou R$ 100"
+                            className="w-full rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-yellow-500"
+                          />
+                        </label>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Resumo Financeiro */}
+                  <div className="space-y-2 rounded-2xl border border-zinc-800 bg-zinc-900/70 p-4 text-xs">
+                    <div className="flex justify-between text-zinc-400">
+                      <span>
+                        Subtotal ({totalItems} {totalItems === 1 ? "item" : "itens"})
+                      </span>
+                      <span className="text-zinc-200">{formatBRL(subtotal)}</span>
+                    </div>
+                    <div className="flex justify-between text-zinc-400">
+                      <span>Taxa de entrega</span>
+                      <span className={deliveryFee > 0 ? "text-zinc-200" : "font-bold text-green-400"}>
+                        {deliveryFee > 0 ? formatBRL(deliveryFee) : "Grátis (Retirada)"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-t border-zinc-800 pt-3 text-sm">
+                      <span className="font-bold text-white">Total do pedido</span>
+                      <span className="text-lg font-black text-white">{formatBRL(total)}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Rodapé Fixo Passo 2 */}
+                <div className="border-t border-zinc-800 bg-zinc-950/95 p-5 backdrop-blur">
+                  <div className="mb-3 flex items-baseline justify-between">
+                    <div>
+                      <span className="text-xs font-medium text-zinc-400">Total a pagar:</span>
+                      <p className="text-2xl font-black text-green-400">{formatBRL(total)}</p>
+                    </div>
+                    <button
+                      onClick={() => setCartStep(1)}
+                      className="text-xs font-bold text-zinc-400 underline underline-offset-4 transition hover:text-white"
+                    >
+                      Alterar itens
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={checkoutWhatsApp}
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-green-600 py-3.5 text-sm font-black text-white shadow-lg shadow-green-950/50 transition hover:bg-green-500 active:scale-[0.99]"
+                  >
+                    Finalizar pelo WhatsApp <ArrowRight size={17} />
+                  </button>
+
+                  <p className="mt-2 text-center text-[11px] leading-4 text-zinc-500">
+                    Seu pedido estruturado será enviado diretamente para nosso WhatsApp oficial.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
