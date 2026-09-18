@@ -1,4 +1,13 @@
 import { useMemo, useState } from "react";
+import imgCalabresa from "./assets/pizzas/calabresa.jpg";
+import imgMussarela from "./assets/pizzas/mussarela.jpg";
+import imgFrangoCatupiry from "./assets/pizzas/frango-catupiry.jpg";
+import imgPortuguesa from "./assets/pizzas/portuguesa.jpg";
+import imgMineira from "./assets/pizzas/mineira.jpg";
+import imgBacon from "./assets/pizzas/bacon.jpg";
+import imgQuatroQueijos from "./assets/pizzas/quatro-queijos.jpg";
+import imgPepperoni from "./assets/pizzas/pepperoni.jpg";
+import imgHeroPizza from "./assets/pizzas/hero-pizza.jpg";
 import {
   AlertCircle,
   ArrowLeft,
@@ -30,6 +39,7 @@ type PizzaFlavor = {
   description: string;
   prices: Record<Size, number>;
   popular?: boolean;
+  imageUrl: string;
 };
 
 type Beverage = {
@@ -76,12 +86,14 @@ const FLAVORS: PizzaFlavor[] = [
     description: "Molho de tomate, muçarela, calabresa fatiada, cebola e orégano.",
     prices: { Broto: 27, Média: 36, Grande: 41 },
     popular: true,
+    imageUrl: imgCalabresa,
   },
   {
     id: "mussarela",
     name: "Muçarela",
     description: "Molho de tomate, muçarela especial, tomate, azeitona e orégano.",
     prices: { Broto: 27, Média: 36, Grande: 41 },
+    imageUrl: imgMussarela,
   },
   {
     id: "frango-catupiry",
@@ -89,12 +101,14 @@ const FLAVORS: PizzaFlavor[] = [
     description: "Molho de tomate, frango desfiado, catupiry, milho e orégano.",
     prices: { Broto: 31, Média: 41, Grande: 47 },
     popular: true,
+    imageUrl: imgFrangoCatupiry,
   },
   {
     id: "portuguesa",
     name: "Portuguesa",
     description: "Muçarela, presunto, ovo, cebola, pimentão, ervilha, milho e azeitona.",
     prices: { Broto: 31, Média: 41, Grande: 47 },
+    imageUrl: imgPortuguesa,
   },
   {
     id: "mineira",
@@ -102,18 +116,21 @@ const FLAVORS: PizzaFlavor[] = [
     description: "Muçarela, carne-seca, cebola, tomate, milho e um toque de orégano.",
     prices: { Broto: 34, Média: 45, Grande: 52 },
     popular: true,
+    imageUrl: imgMineira,
   },
   {
     id: "bacon",
     name: "Bacon",
     description: "Molho de tomate, muçarela, bacon crocante, milho e orégano.",
     prices: { Broto: 31, Média: 41, Grande: 47 },
+    imageUrl: imgBacon,
   },
   {
     id: "quatro-queijos",
     name: "4 Queijos",
     description: "Muçarela, provolone, parmesão e catupiry sobre molho artesanal.",
     prices: { Broto: 34, Média: 45, Grande: 52 },
+    imageUrl: imgQuatroQueijos,
   },
   {
     id: "pepperoni",
@@ -121,12 +138,15 @@ const FLAVORS: PizzaFlavor[] = [
     description: "Molho de tomate, muçarela, pepperoni e orégano.",
     prices: { Broto: 34, Média: 45, Grande: 52 },
     popular: true,
+    imageUrl: imgPepperoni,
   },
   {
     id: "chocolate",
     name: "Chocolate",
     description: "Chocolate cremoso, granulado e cobertura especial.",
     prices: { Broto: 30, Média: 39, Grande: 45 },
+    imageUrl:
+      "https://static.itdg.com.br/images/640-400/ab93c09d82d7004b7c440fe5d3d734ad/131483-original.jpg",
   },
 ];
 
@@ -518,32 +538,68 @@ function App() {
 
       <main>
         <section className="mx-auto max-w-6xl px-4 pb-6 pt-8 sm:px-6 sm:pt-12">
-          <div className="grid gap-5 lg:grid-cols-[1.45fr_.8fr]">
-            <div className="relative overflow-hidden rounded-3xl border border-red-900/60 bg-gradient-to-br from-red-950 via-red-900 to-zinc-950 p-6 shadow-2xl shadow-red-950/20 sm:p-9">
-              <div className="absolute -right-14 -top-14 h-40 w-40 rounded-full bg-red-500/10 blur-2xl" />
-              <div className="relative">
-                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 text-xs font-black tracking-wide text-red-700">
-                  <span className="h-2 w-2 rounded-full bg-red-600" />
+          <div className="grid gap-5 lg:grid-cols-[1.6fr_.95fr]">
+            <div className="relative overflow-hidden rounded-3xl border border-red-900/60 shadow-2xl shadow-red-950/30">
+              {/* Full background pizza image */}
+              <img
+                src={imgHeroPizza}
+                alt="Fundo Pizzaria do Mineiro"
+                className="absolute inset-0 h-full w-full object-cover object-center"
+              />
+
+              {/* Dark layered gradient overlays for maximum text contrast */}
+              <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/85 to-zinc-950/60" />
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/95 via-transparent to-red-950/30" />
+
+              {/* Clean, legible content over dark background */}
+              <div className="relative flex flex-col items-start justify-center p-6 sm:p-8 md:p-10 lg:p-11">
+                <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-black tracking-wide text-red-700 shadow-lg">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-red-600"></span>
+                  </span>
                   OFERTA DA CASA
                 </div>
-                <h1 className="max-w-3xl text-3xl font-black uppercase leading-tight tracking-tight sm:text-5xl">
-                  BORDA RECHEADA <span className="text-red-300">+</span> GUARANÁ COROA
-                  <span className="text-red-300"> EM DESTAQUE!</span>
+
+                <h1 className="max-w-2xl text-2xl font-black uppercase leading-tight tracking-tight text-white drop-shadow-md sm:text-3xl md:text-4xl lg:text-[2.5rem]">
+                  Compre uma Pizza Grande e ganhe{" "}
+                  <span className="bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 bg-clip-text text-transparent">
+                    Borda Recheada
+                  </span>{" "}
+                  +{" "}
+                  <span className="bg-gradient-to-r from-emerald-300 to-green-400 bg-clip-text text-transparent">
+                    Guaraná Coroa
+                  </span>{" "}
+                  grátis!
                 </h1>
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-red-100/80 sm:text-base">
-                  Escolha sua pizza, personalize o tamanho e a borda e mande o pedido direto
-                  para nosso WhatsApp.
+
+                <p className="mt-3.5 max-w-xl text-sm leading-relaxed text-zinc-200 drop-shadow sm:text-base">
+                  Escolha seu sabor favorito, selecione a borda de Catupiry ou Cheddar e receba seu Guaraná 2L trincando de gelado direto no WhatsApp!
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
+
+                <div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-bold text-zinc-200">
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-red-800/60 bg-black/60 px-3 py-1.5 backdrop-blur-md">
+                    🧀 Catupiry ou Cheddar
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-red-800/60 bg-black/60 px-3 py-1.5 backdrop-blur-md">
+                    👑 Guaraná 2L Gelado
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 rounded-lg border border-amber-800/60 bg-black/60 px-3 py-1.5 text-amber-300 backdrop-blur-md">
+                    ⭐ Oferta por tempo limitado
+                  </span>
+                </div>
+
+                <div className="mt-7 flex w-full flex-wrap gap-3.5 sm:w-auto">
                   <a
                     href="#cardapio"
-                    className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-black text-red-800 transition hover:bg-red-50"
+                    className="group inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-black text-red-900 shadow-xl shadow-black/40 transition hover:bg-red-50 hover:scale-[1.02] active:scale-[0.98] sm:flex-none"
                   >
-                    Ver pizzas <ArrowRight size={17} />
+                    <span>Ver pizzas</span>
+                    <ArrowRight size={17} className="transition-transform group-hover:translate-x-1" />
                   </a>
                   <a
                     href="#bebidas"
-                    className="inline-flex items-center gap-2 rounded-xl border border-red-800/80 bg-red-950/60 px-5 py-3 text-sm font-black text-white transition hover:bg-red-900/60"
+                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-white/20 bg-black/60 px-6 py-3.5 text-sm font-black text-white shadow-xl shadow-black/40 backdrop-blur-md transition hover:border-red-500 hover:bg-black/80 hover:scale-[1.02] active:scale-[0.98] sm:flex-none"
                   >
                     Ver bebidas 🥤
                   </a>
@@ -620,38 +676,47 @@ function App() {
             </div>
           </div>
 
-          <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {visibleFlavors.map((flavor, index) => (
               <article
                 key={flavor.id}
-                className="animate-float-in group flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900/70 p-5 transition hover:-translate-y-1 hover:border-red-900/80 hover:bg-zinc-900"
+                className="animate-float-in group flex flex-col overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/70 transition hover:-translate-y-1 hover:border-red-900/60 hover:shadow-2xl hover:shadow-red-950/30"
                 style={{ animationDelay: `${index * 45}ms` }}
               >
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-red-950 text-red-500">
-                    <Pizza size={25} />
-                  </div>
+                {/* Image area */}
+                <div className="relative h-44 w-full overflow-hidden bg-zinc-800">
+                  <img
+                    src={flavor.imageUrl}
+                    alt={`Pizza ${flavor.name}`}
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  {/* Dark gradient overlay at bottom of image */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/90 via-zinc-900/10 to-transparent" />
+                  {/* Popular badge overlaid on image */}
                   {flavor.popular && (
-                    <span className="rounded-full border border-red-900 bg-red-950/60 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-red-300">
-                      Mais pedido
+                    <span className="absolute right-3 top-3 flex items-center gap-1 rounded-full border border-red-800/80 bg-red-950/90 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-red-300 backdrop-blur-sm">
+                      🔥 Mais pedido
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-xl font-black">{flavor.name}</h3>
-                <p className="mt-2 min-h-14 text-sm leading-5 text-zinc-400">{flavor.description}</p>
+                {/* Card body */}
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="text-xl font-black">{flavor.name}</h3>
+                  <p className="mt-2 min-h-12 text-sm leading-5 text-zinc-400">{flavor.description}</p>
 
-                <div className="mt-5 flex items-end justify-between gap-4">
-                  <div>
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-600">Grande a partir de</p>
-                    <p className="mt-1 text-xl font-black text-white">{formatBRL(flavor.prices.Grande)}</p>
+                  <div className="mt-5 flex items-end justify-between gap-4">
+                    <div>
+                      <p className="text-[11px] font-bold uppercase tracking-wider text-zinc-600">Grande a partir de</p>
+                      <p className="mt-1 text-xl font-black text-white">{formatBRL(flavor.prices.Grande)}</p>
+                    </div>
+                    <button
+                      onClick={() => openCustomizer(flavor)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-zinc-950 transition hover:bg-red-500 hover:text-white"
+                    >
+                      + Personalizar
+                    </button>
                   </div>
-                  <button
-                    onClick={() => openCustomizer(flavor)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-zinc-950 transition hover:bg-red-500 hover:text-white"
-                  >
-                    + Personalizar
-                  </button>
                 </div>
               </article>
             ))}
