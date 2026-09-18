@@ -607,39 +607,94 @@ function App() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-zinc-800 bg-zinc-900/80 p-6">
-              <div className="mb-5 flex items-center justify-between">
-                <span className="text-xs font-black uppercase tracking-[0.18em] text-zinc-500">
-                  Atendimento
-                </span>
+            <div className="relative flex flex-col justify-between overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-b from-zinc-900/90 via-zinc-900/80 to-zinc-950/90 p-6 sm:p-7 shadow-2xl backdrop-blur-md">
+              {/* Subtle ambient accent glow */}
+              <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-red-600/10 blur-3xl" />
+
+              {/* Top Row: Label & Status Badge */}
+              <div className="flex items-center justify-between gap-3">
+                <div className="inline-flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-red-600 shadow-[0_0_8px_rgba(220,38,38,0.7)]" />
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-zinc-400">
+                    Atendimento
+                  </span>
+                </div>
                 <span
-                  className={`status-pulse inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-black ${
-                    open ? "bg-green-950 text-green-400" : "bg-zinc-800 text-zinc-400"
+                  className={`status-pulse inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs font-black transition ${
+                    open
+                      ? "border-emerald-500/30 bg-emerald-950/80 text-emerald-400 shadow-sm shadow-emerald-950/50"
+                      : "border-zinc-700/50 bg-zinc-800/80 text-zinc-400"
                   }`}
                 >
-                  <span className={`h-2 w-2 rounded-full ${open ? "bg-green-400" : "bg-zinc-500"}`} />
+                  <span className={`h-2 w-2 rounded-full ${open ? "bg-emerald-400 shadow-[0_0_6px_#34d399]" : "bg-zinc-500"}`} />
                   {open ? "Aberto" : "Fechado"}
                 </span>
               </div>
 
-              <h2 className="text-2xl font-black">Pizzaria do Mineiro</h2>
-              <div className="mt-5 space-y-4 text-sm text-zinc-300">
-                <div className="flex gap-3">
-                  <Clock3 className="mt-0.5 shrink-0 text-red-500" size={19} />
+              {/* Brand: Logo + Name + Slogan */}
+              <div className="mt-5 flex items-center gap-3.5 border-b border-zinc-800/70 pb-5">
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-red-600 text-white shadow-lg shadow-red-950/60 ring-2 ring-red-500/20">
+                  <Pizza size={25} strokeWidth={2.4} />
+                </div>
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-black tracking-tight text-white leading-tight">
+                    Pizzaria do Mineiro
+                  </h2>
+                  <p className="mt-1 text-xs sm:text-sm font-medium text-zinc-400">
+                    Sabor artesanal de verdade
+                  </p>
+                </div>
+              </div>
+
+              {/* Middle Section: Horário & Endereço with High Contrast & Generous Breathing Room */}
+              <div className="my-auto flex flex-col gap-4 py-5">
+                <div className="flex items-start gap-4 rounded-2xl border border-zinc-800/70 bg-zinc-950/40 p-4 transition hover:border-zinc-700/70">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-red-800/40 bg-red-950/60 text-red-400">
+                    <Clock3 size={20} strokeWidth={2.2} />
+                  </div>
                   <div>
-                    <p className="font-bold text-white">Horário de funcionamento</p>
-                    <p className="mt-1 text-zinc-400">Terça a Domingo: 18h às 23h</p>
+                    <p className="text-xs font-black uppercase tracking-wider text-red-400">
+                      Horário de funcionamento
+                    </p>
+                    <p className="mt-1 text-base font-bold text-white">
+                      Terça a Domingo: <span className="font-extrabold text-zinc-200">18h às 23h</span>
+                    </p>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <MapPin className="mt-0.5 shrink-0 text-red-500" size={19} />
+
+                <div className="flex items-start gap-4 rounded-2xl border border-zinc-800/70 bg-zinc-950/40 p-4 transition hover:border-zinc-700/70">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-red-800/40 bg-red-950/60 text-red-400">
+                    <MapPin size={20} strokeWidth={2.2} />
+                  </div>
                   <div>
-                    <p className="font-bold text-white">Endereço</p>
-                    <p className="mt-1 leading-5 text-zinc-400">
+                    <p className="text-xs font-black uppercase tracking-wider text-red-400">
+                      Endereço
+                    </p>
+                    <p className="mt-1 text-base font-bold text-white">
                       Nova Valverde, Rua Almir Cruz Amorim, Nº 1122
-                      <br />
+                    </p>
+                    <p className="text-sm font-semibold text-zinc-400">
                       Cariacica - ES
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Footer: Service Badges to eliminate empty space */}
+              <div className="border-t border-zinc-800/70 pt-4">
+                <div className="flex items-center justify-between text-xs font-bold text-zinc-300">
+                  <div className="flex items-center gap-2">
+                    <div className="grid h-7 w-7 place-items-center rounded-lg bg-zinc-800/80 text-red-400">
+                      <Bike size={16} />
+                    </div>
+                    <span>Delivery rápido</span>
+                  </div>
+                  <div className="h-4 w-px bg-zinc-800" />
+                  <div className="flex items-center gap-2">
+                    <div className="grid h-7 w-7 place-items-center rounded-lg bg-zinc-800/80 text-red-400">
+                      <Store size={16} />
+                    </div>
+                    <span>Retirada no balcão</span>
                   </div>
                 </div>
               </div>
