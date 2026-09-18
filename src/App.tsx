@@ -661,7 +661,7 @@ function App() {
                   key={item}
                   onClick={() => setCategory(item)}
                   className={`flex-1 rounded-lg px-4 py-2 text-sm font-bold transition sm:flex-none ${
-                    category === item ? "bg-red-600 text-white" : "text-zinc-400 hover:text-white"
+                    category === item ? "bg-emerald-600 text-white shadow-sm" : "text-zinc-400 hover:text-white"
                   }`}
                 >
                   {item}
@@ -712,9 +712,9 @@ function App() {
                     </div>
                     <button
                       onClick={() => openCustomizer(flavor)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-zinc-950 transition hover:bg-red-500 hover:text-white"
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-white px-4 py-2.5 text-sm font-black text-zinc-950 transition hover:bg-emerald-600 hover:text-white"
                     >
-                      + Personalizar
+                      + Pedir
                     </button>
                   </div>
                 </div>
@@ -816,7 +816,7 @@ function App() {
                     ) : (
                       <button
                         onClick={() => addBeverageToCart(beverage)}
-                        className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-black text-zinc-950 shadow-sm transition hover:bg-red-500 hover:text-white active:scale-95"
+                        className="inline-flex items-center gap-1.5 rounded-xl bg-white px-3.5 py-2 text-xs font-black text-zinc-950 shadow-sm transition hover:bg-emerald-600 hover:text-white active:scale-95"
                       >
                         <Plus size={14} strokeWidth={3} />
                         Adicionar
@@ -835,7 +835,7 @@ function App() {
           <div className="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-t-3xl border border-zinc-800 bg-zinc-950 shadow-2xl sm:rounded-3xl">
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-zinc-800 bg-zinc-950/95 px-5 py-4 backdrop-blur">
               <div>
-                <p className="text-xs font-bold uppercase tracking-wider text-red-500">Personalizar</p>
+                <p className="text-xs font-bold uppercase tracking-wider text-emerald-500">Personalizar</p>
                 <h2 className="text-xl font-black">{selectedFlavor.name}</h2>
               </div>
               <button
@@ -860,13 +860,13 @@ function App() {
                       onClick={() => setSelectedSize(size.label)}
                       className={`rounded-xl border p-3 text-left transition ${
                         selectedSize === size.label
-                          ? "border-red-500 bg-red-950/40"
-                          : "border-zinc-800 bg-zinc-900 hover:border-zinc-600"
+                          ? "border-emerald-500 bg-emerald-950/30 text-white shadow-sm shadow-emerald-950/30"
+                          : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <span className="font-bold">{size.label}</span>
-                        {selectedSize === size.label && <Check size={16} className="text-red-500" />}
+                        {selectedSize === size.label && <Check size={16} className="text-emerald-400" />}
                       </div>
                       <span className="mt-1 block text-xs text-zinc-500">
                         {formatBRL(selectedFlavor.prices[size.label])}
@@ -888,14 +888,14 @@ function App() {
                       onClick={() => setSelectedCrust(crust.label)}
                       className={`flex w-full items-center justify-between rounded-xl border p-3 text-left transition ${
                         selectedCrust === crust.label
-                          ? "border-red-500 bg-red-950/40"
-                          : "border-zinc-800 bg-zinc-900 hover:border-zinc-600"
+                          ? "border-emerald-500 bg-emerald-950/30 text-white shadow-sm shadow-emerald-950/30"
+                          : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
                       }`}
                     >
                       <span className="font-bold">{crust.label}</span>
                       <span className="flex items-center gap-2 text-sm text-zinc-400">
                         {crust.extra === 0 ? "Grátis" : `+ ${formatBRL(crust.extra)}`}
-                        {selectedCrust === crust.label && <Check size={16} className="text-red-500" />}
+                        {selectedCrust === crust.label && <Check size={16} className="text-emerald-400" />}
                       </span>
                     </button>
                   ))}
@@ -916,7 +916,7 @@ function App() {
 
               <button
                 onClick={addToCart}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3.5 font-black transition hover:bg-red-500"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3.5 font-black text-white shadow-lg shadow-emerald-950/40 transition hover:bg-emerald-500 active:scale-[0.99]"
               >
                 <ShoppingBag size={18} />
                 Adicionar ao pedido
@@ -944,7 +944,7 @@ function App() {
                     </button>
                   )}
                   <div>
-                    <p className="text-[11px] font-black uppercase tracking-wider text-red-500">
+                    <p className="text-[11px] font-black uppercase tracking-wider text-emerald-500">
                       {cart.length === 0
                         ? "Seu pedido"
                         : cartStep === 1
@@ -981,7 +981,7 @@ function App() {
                   >
                     <div
                       className={`h-1.5 flex-1 rounded-full transition-all ${
-                        cartStep === 1 ? "bg-red-500" : "bg-green-500"
+                        cartStep === 1 ? "bg-emerald-500" : "bg-emerald-500"
                       }`}
                     />
                   </button>
@@ -993,7 +993,7 @@ function App() {
                   >
                     <div
                       className={`h-1.5 flex-1 rounded-full transition-all ${
-                        cartStep === 2 ? "bg-red-500" : "bg-zinc-800"
+                        cartStep === 2 ? "bg-emerald-500" : "bg-zinc-800"
                       }`}
                     />
                   </button>
@@ -1101,7 +1101,7 @@ function App() {
                   <div className="pt-2">
                     <label className="block rounded-2xl border border-zinc-800/80 bg-zinc-900/50 p-4">
                       <div className="mb-2 flex items-center gap-2 text-xs font-bold text-zinc-300">
-                        <FileText size={14} className="text-red-400" />
+                        <FileText size={14} className="text-zinc-400" />
                         Observações para a cozinha (opcional)
                       </div>
                       <textarea
@@ -1109,7 +1109,7 @@ function App() {
                         onChange={(e) => setOrderNotes(e.target.value)}
                         placeholder="Ex: Tirar cebola, massa bem crocante, sachês de maionese..."
                         rows={2}
-                        className="w-full resize-none rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-200 placeholder:text-zinc-600 outline-none transition focus:border-red-500"
+                        className="w-full resize-none rounded-xl border border-zinc-800 bg-zinc-950 p-3 text-xs text-zinc-200 placeholder:text-zinc-600 outline-none transition focus:border-zinc-500"
                       />
                     </label>
                   </div>
@@ -1129,7 +1129,7 @@ function App() {
 
                   <button
                     onClick={handleAdvanceToStep2}
-                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-red-600 py-3.5 text-sm font-black text-white shadow-lg shadow-red-950/50 transition hover:bg-red-500 active:scale-[0.99]"
+                    className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-950/50 transition hover:bg-emerald-500 active:scale-[0.99]"
                   >
                     Continuar para entrega <ArrowRight size={17} />
                   </button>
@@ -1162,14 +1162,17 @@ function App() {
                       <input
                         value={customerName}
                         onChange={(e) => {
-                          setCustomerName(e.target.value);
+                          const val = e.target.value;
+                          setCustomerName(val);
                           if (formErrors.name) setFormErrors((prev) => ({ ...prev, name: undefined }));
                         }}
                         placeholder="Como podemos te chamar?"
                         className={`w-full rounded-xl border bg-zinc-900 px-4 py-3 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
                           formErrors.name
-                            ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                            : "border-zinc-800 focus:border-red-500"
+                            ? "border-red-500 bg-red-950/10 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                            : customerName.trim()
+                            ? "border-emerald-700/60 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                            : "border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-600"
                         }`}
                       />
                     </label>
@@ -1194,16 +1197,23 @@ function App() {
                         }}
                         className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition ${
                           deliveryType === "Retirada"
-                            ? "border-red-500 bg-red-950/30 text-white shadow-sm shadow-red-950/30"
-                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                            ? "border-emerald-500 bg-emerald-950/30 text-white shadow-sm shadow-emerald-950/40"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <Store
-                            size={18}
-                            className={deliveryType === "Retirada" ? "text-red-400" : "text-zinc-500"}
-                          />
-                          <span className="text-sm font-bold">Retirada</span>
+                        <div className="flex w-full items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Store
+                              size={18}
+                              className={deliveryType === "Retirada" ? "text-emerald-400" : "text-zinc-500"}
+                            />
+                            <span className="text-sm font-bold">Retirada</span>
+                          </div>
+                          {deliveryType === "Retirada" && (
+                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-zinc-950">
+                              <Check size={11} strokeWidth={3} />
+                            </span>
+                          )}
                         </div>
                         <p className="mt-1 text-[11px] text-zinc-400">Balcão da pizzaria (Grátis)</p>
                       </button>
@@ -1213,16 +1223,23 @@ function App() {
                         onClick={() => setDeliveryType("Entrega")}
                         className={`flex flex-col items-start rounded-2xl border p-3.5 text-left transition ${
                           deliveryType === "Entrega"
-                            ? "border-red-500 bg-red-950/30 text-white shadow-sm shadow-red-950/30"
-                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
+                            ? "border-emerald-500 bg-emerald-950/30 text-white shadow-sm shadow-emerald-950/40"
+                            : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
                         }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <Bike
-                            size={18}
-                            className={deliveryType === "Entrega" ? "text-red-400" : "text-zinc-500"}
-                          />
-                          <span className="text-sm font-bold">Entrega</span>
+                        <div className="flex w-full items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Bike
+                              size={18}
+                              className={deliveryType === "Entrega" ? "text-emerald-400" : "text-zinc-500"}
+                            />
+                            <span className="text-sm font-bold">Entrega</span>
+                          </div>
+                          {deliveryType === "Entrega" && (
+                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-emerald-500 text-zinc-950">
+                              <Check size={11} strokeWidth={3} />
+                            </span>
+                          )}
                         </div>
                         <p className="mt-1 text-[11px] text-zinc-400">Receba em casa (+R$ 5,00)</p>
                       </button>
@@ -1249,15 +1266,18 @@ function App() {
                           <input
                             value={street}
                             onChange={(e) => {
-                              setStreet(e.target.value);
+                              const val = e.target.value;
+                              setStreet(val);
                               if (formErrors.street)
                                 setFormErrors((prev) => ({ ...prev, street: undefined }));
                             }}
                             placeholder="Ex: Rua Almir Cruz"
                             className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
                               formErrors.street
-                                ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                                : "border-zinc-800 focus:border-red-500"
+                                ? "border-red-500 bg-red-950/10 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                                : street.trim()
+                                ? "border-emerald-700/60 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                                : "border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-600"
                             }`}
                           />
                           {formErrors.street && (
@@ -1274,15 +1294,18 @@ function App() {
                           <input
                             value={number}
                             onChange={(e) => {
-                              setNumber(e.target.value);
+                              const val = e.target.value;
+                              setNumber(val);
                               if (formErrors.number)
                                 setFormErrors((prev) => ({ ...prev, number: undefined }));
                             }}
                             placeholder="Ex: 150"
                             className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
                               formErrors.number
-                                ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                                : "border-zinc-800 focus:border-red-500"
+                                ? "border-red-500 bg-red-950/10 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                                : number.trim()
+                                ? "border-emerald-700/60 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                                : "border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-600"
                             }`}
                           />
                           {formErrors.number && (
@@ -1301,15 +1324,18 @@ function App() {
                         <input
                           value={neighborhood}
                           onChange={(e) => {
-                            setNeighborhood(e.target.value);
+                            const val = e.target.value;
+                            setNeighborhood(val);
                             if (formErrors.neighborhood)
                               setFormErrors((prev) => ({ ...prev, neighborhood: undefined }));
                           }}
                           placeholder="Ex: Nova Valverde"
                           className={`w-full rounded-xl border bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 ${
                             formErrors.neighborhood
-                              ? "border-red-500 focus:ring-1 focus:ring-red-500"
-                              : "border-zinc-800 focus:border-red-500"
+                              ? "border-red-500 bg-red-950/10 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                              : neighborhood.trim()
+                              ? "border-emerald-700/60 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/30"
+                              : "border-zinc-800 focus:border-zinc-500 focus:ring-1 focus:ring-zinc-600"
                           }`}
                         />
                         {formErrors.neighborhood && (
@@ -1331,7 +1357,7 @@ function App() {
                           value={complement}
                           onChange={(e) => setComplement(e.target.value)}
                           placeholder="Ex: Apto 302, Bloco B, ao lado do mercado..."
-                          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-red-500"
+                          className="w-full rounded-xl border border-zinc-800 bg-zinc-950 px-3.5 py-2.5 text-sm text-zinc-100 outline-none transition placeholder:text-zinc-600 focus:border-zinc-500"
                         />
                       </div>
                     </div>
@@ -1348,13 +1374,13 @@ function App() {
                         onClick={() => setPaymentMethod("pix")}
                         className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
                           paymentMethod === "pix"
-                            ? "border-green-500/80 bg-green-950/20 text-white"
+                            ? "border-emerald-500/80 bg-emerald-950/25 text-white shadow-sm shadow-emerald-950/30"
                             : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
                         }`}
                       >
                         <QrCode
                           size={20}
-                          className={paymentMethod === "pix" ? "text-green-400" : "text-zinc-500"}
+                          className={paymentMethod === "pix" ? "text-emerald-400" : "text-zinc-500"}
                         />
                         <span className="mt-1 text-xs font-bold">PIX</span>
                         <span className="text-[10px] text-zinc-500">Mais rápido</span>
@@ -1365,13 +1391,13 @@ function App() {
                         onClick={() => setPaymentMethod("cartao")}
                         className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
                           paymentMethod === "cartao"
-                            ? "border-red-500/80 bg-red-950/20 text-white"
+                            ? "border-emerald-500/80 bg-emerald-950/25 text-white shadow-sm shadow-emerald-950/30"
                             : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
                         }`}
                       >
                         <CreditCard
                           size={20}
-                          className={paymentMethod === "cartao" ? "text-red-400" : "text-zinc-500"}
+                          className={paymentMethod === "cartao" ? "text-emerald-400" : "text-zinc-500"}
                         />
                         <span className="mt-1 text-xs font-bold">Cartão</span>
                         <span className="text-[10px] text-zinc-500">Maquininha</span>
@@ -1382,13 +1408,13 @@ function App() {
                         onClick={() => setPaymentMethod("dinheiro")}
                         className={`flex flex-col items-center justify-center rounded-2xl border p-3 text-center transition ${
                           paymentMethod === "dinheiro"
-                            ? "border-yellow-500/80 bg-yellow-950/20 text-white"
+                            ? "border-emerald-500/80 bg-emerald-950/25 text-white shadow-sm shadow-emerald-950/30"
                             : "border-zinc-800 bg-zinc-900/80 text-zinc-400 hover:border-zinc-700"
                         }`}
                       >
                         <Banknote
                           size={20}
-                          className={paymentMethod === "dinheiro" ? "text-yellow-400" : "text-zinc-500"}
+                          className={paymentMethod === "dinheiro" ? "text-emerald-400" : "text-zinc-500"}
                         />
                         <span className="mt-1 text-xs font-bold">Dinheiro</span>
                         <span className="text-[10px] text-zinc-500">Em espécie</span>
