@@ -8,6 +8,14 @@ import imgBacon from "./assets/pizzas/bacon.jpg";
 import imgQuatroQueijos from "./assets/pizzas/quatro-queijos.jpg";
 import imgPepperoni from "./assets/pizzas/pepperoni.jpg";
 import imgHeroPizza from "./assets/pizzas/hero-pizza.jpg";
+import imgCocaOriginal from "./assets/bebidas/coca-cola-original.jpg";
+import imgCocaZero from "./assets/bebidas/coca-cola-zero.jpg";
+import imgGuaranaCoroa from "./assets/bebidas/guarana-coroa.jpg";
+import imgCoroaLaranja from "./assets/bebidas/coroa-laranja.jpg";
+import imgCoroaUva from "./assets/bebidas/coroa-uva.jpg";
+import imgCoroaLimao from "./assets/bebidas/coroa-limao.jpg";
+import imgCoroaTangerina from "./assets/bebidas/coroa-tangerina.jpg";
+import imgCoroaCola from "./assets/bebidas/coroa-cola.jpg";
 import {
   AlertCircle,
   ArrowLeft,
@@ -49,6 +57,7 @@ type Beverage = {
   price: number;
   description: string;
   tag?: string;
+  imageUrl?: string;
   theme: {
     emoji: string;
     iconBg: string;
@@ -156,6 +165,7 @@ const BEVERAGES: Beverage[] = [
     name: "Coca-Cola Original",
     volume: "1,5L",
     price: 10.0,
+    imageUrl: imgCocaOriginal,
     description: "Sabor inconfundível e refrescante na medida certa para seu pedido.",
     theme: {
       emoji: "🥤",
@@ -169,6 +179,7 @@ const BEVERAGES: Beverage[] = [
     name: "Coca-Cola Original",
     volume: "2L",
     price: 12.0,
+    imageUrl: imgCocaOriginal,
     description: "O tamanho perfeito de 2 Litros para dividir com a família toda.",
     tag: "Mais Pedida",
     theme: {
@@ -183,6 +194,7 @@ const BEVERAGES: Beverage[] = [
     name: "Coca-Cola Zero",
     volume: "1,5L",
     price: 10.0,
+    imageUrl: imgCocaZero,
     description: "Todo o sabor inconfundível de Coca-Cola sem adição de açúcares.",
     tag: "Zero Açúcar",
     theme: {
@@ -197,6 +209,7 @@ const BEVERAGES: Beverage[] = [
     name: "Coca-Cola Zero",
     volume: "2L",
     price: 12.0,
+    imageUrl: imgCocaZero,
     description: "Garrafa de 2 litros do clássico sem açúcar, extremamente gelada.",
     tag: "Zero Açúcar",
     theme: {
@@ -211,13 +224,14 @@ const BEVERAGES: Beverage[] = [
     name: "Guaraná Coroa",
     volume: "2L",
     price: 8.5,
+    imageUrl: imgGuaranaCoroa,
     description: "O autêntico guaraná capixaba, muito refrescante e favorito da casa.",
-    tag: "Destaque da Casa",
+    tag: "Destaque",
     theme: {
       emoji: "👑",
       iconBg: "bg-emerald-950/60 text-emerald-400",
       border: "border-emerald-800/60",
-      badge: "border-emerald-700/60 bg-emerald-950/50 text-emerald-300",
+      badge: "border-zinc-700 bg-zinc-900 text-amber-400",
     },
   },
   {
@@ -225,12 +239,13 @@ const BEVERAGES: Beverage[] = [
     name: "Coroa Laranja",
     volume: "2L",
     price: 8.0,
+    imageUrl: imgCoroaLaranja,
     description: "Refrigerante Coroa sabor laranja, bem gelado e cítrico.",
     theme: {
       emoji: "🍊",
       iconBg: "bg-orange-950/60 text-orange-400",
       border: "border-orange-800/60",
-      badge: "border-orange-800/60 bg-orange-950/40 text-orange-400",
+      badge: "border-zinc-700 bg-zinc-900 text-zinc-300",
     },
   },
   {
@@ -238,12 +253,13 @@ const BEVERAGES: Beverage[] = [
     name: "Coroa Uva",
     volume: "2L",
     price: 8.0,
+    imageUrl: imgCoroaUva,
     description: "Sabor doce e marcante de uva que harmoniza muito bem com pizza.",
     theme: {
       emoji: "🍇",
       iconBg: "bg-purple-950/60 text-purple-400",
       border: "border-purple-800/60",
-      badge: "border-purple-800/60 bg-purple-950/40 text-purple-400",
+      badge: "border-zinc-700 bg-zinc-900 text-zinc-300",
     },
   },
   {
@@ -251,12 +267,13 @@ const BEVERAGES: Beverage[] = [
     name: "Coroa Limão",
     volume: "2L",
     price: 8.0,
+    imageUrl: imgCoroaLimao,
     description: "Refrescância pura do limão para acompanhar e quebrar o paladar.",
     theme: {
       emoji: "🍋",
       iconBg: "bg-lime-950/60 text-lime-400",
       border: "border-lime-800/60",
-      badge: "border-lime-800/60 bg-lime-950/40 text-lime-400",
+      badge: "border-zinc-700 bg-zinc-900 text-zinc-300",
     },
   },
   {
@@ -264,12 +281,13 @@ const BEVERAGES: Beverage[] = [
     name: "Coroa Tangerina",
     volume: "2L",
     price: 8.0,
+    imageUrl: imgCoroaTangerina,
     description: "O sabor cítrico e frutado especial de tangerina que todo mundo ama.",
     theme: {
       emoji: "🍊",
       iconBg: "bg-amber-950/60 text-amber-400",
       border: "border-amber-800/60",
-      badge: "border-amber-800/60 bg-amber-950/40 text-amber-400",
+      badge: "border-zinc-700 bg-zinc-900 text-zinc-300",
     },
   },
   {
@@ -277,13 +295,14 @@ const BEVERAGES: Beverage[] = [
     name: "Coroa Cola",
     volume: "2L",
     price: 7.5,
+    imageUrl: imgCoroaCola,
     description: "Sabor cola refrescante com o melhor preço para sua refeição.",
     tag: "Super Preço",
     theme: {
       emoji: "🥤",
       iconBg: "bg-rose-950/60 text-rose-400",
       border: "border-rose-800/60",
-      badge: "border-rose-800/60 bg-rose-950/40 text-rose-400",
+      badge: "border-zinc-700 bg-zinc-900 text-amber-400",
     },
   },
 ];
@@ -810,27 +829,36 @@ function App() {
                   }`}
                 >
                   <div>
-                    <div className="flex items-start justify-between gap-2">
-                      <div
-                        className={`grid h-12 w-12 place-items-center rounded-xl border ${beverage.theme.iconBg} ${beverage.theme.border}`}
-                      >
-                        <span className="text-2xl leading-none">{beverage.theme.emoji}</span>
-                      </div>
-                      <div className="flex flex-col items-end gap-1">
-                        <span className="rounded-full border border-zinc-800 bg-zinc-950 px-2 py-0.5 text-[11px] font-black text-zinc-300">
+                    {/* Visual container: Centered Studio Image with Mask & Rounded Borders */}
+                    <div className="relative mb-3.5 flex h-40 w-full items-center justify-center overflow-hidden rounded-2xl border border-zinc-800/80 bg-zinc-950 p-2 transition group-hover:border-zinc-700/80">
+                      {/* Top Badges: Safe insets to never clip corners */}
+                      <div className="absolute inset-x-3 top-3 z-10 flex items-center justify-between gap-1.5 pointer-events-none">
+                        <span className="rounded-full border border-zinc-700/80 bg-zinc-900/90 px-2.5 py-0.5 text-[11px] font-black text-zinc-200 shadow-sm backdrop-blur-sm shrink-0">
                           {beverage.volume}
                         </span>
                         {beverage.tag && (
-                          <span
-                            className={`rounded-full border px-2 py-0.5 text-[10px] font-black uppercase tracking-wider ${beverage.theme.badge}`}
-                          >
+                          <span className="rounded-full border border-zinc-700/80 bg-zinc-900/90 px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider text-zinc-300 shadow-sm backdrop-blur-sm truncate max-w-[60%]">
                             {beverage.tag}
                           </span>
                         )}
                       </div>
+
+                      {/* Studio Image */}
+                      {beverage.imageUrl ? (
+                        <img
+                          src={beverage.imageUrl}
+                          alt={`${beverage.name} ${beverage.volume}`}
+                          className="h-full w-full object-contain drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)] transition-transform duration-500 group-hover:scale-105"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="grid h-16 w-16 place-items-center text-3xl">
+                          <span className="leading-none">{beverage.theme.emoji}</span>
+                        </div>
+                      )}
                     </div>
 
-                    <h3 className="mt-3.5 text-base font-black text-white">{beverage.name}</h3>
+                    <h3 className="text-base font-black text-white">{beverage.name}</h3>
                     <p className="mt-1 text-xs leading-relaxed text-zinc-400 min-h-10">
                       {beverage.description}
                     </p>
